@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    },
+    "rootDirs": [
+      "src"
+    ]
+  },
+  "include": [
+    "src/**/*", "__tests__/config/user-data.ts", "__tests__/config/intialize-sts.ts", "__tests__/api-testing/doamain/create-category.spec.ts", "__tests__/api-testing/app-config.spec.ts", "__tests__/api-testing/app-data.spec.ts", "__tests__/api-testing/ainit-data.spec.ts", "__tests__/api-testing/query/query-side.spec.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "documentation"
+  ]
+}
