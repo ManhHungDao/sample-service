@@ -1,7 +1,11 @@
-import { IsString, IsNotEmpty } from "class-validator";
-export class CreateEmpoyeeRequestDto {}
-export class UpdateEmpoyeeRequestDto {
-  @IsNotEmpty()
+import { IsNotEmpty, IsString } from "class-validator";
+
+export class CreateEmployeeRequestDto {
+  
+}
+
+export class UpdateEmployeeRequestDto {
   @IsString()
+  @IsNotEmpty()
   id: string;
 }

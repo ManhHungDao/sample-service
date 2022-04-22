@@ -1,39 +1,104 @@
-import { Injectable } from "@nestjs/common";
-import uuid = require("uuid");
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { EmployeeRepository } from "../infra/repository";
 import {
-  EmployeeReponseDto,
-  EmployeePagingReponseDto,
-} from "../web/dto/reponsive.dto";
+  EmployeeResponseDto,
+  EmployeePagingResponseDto,
+} from "../web/dto/response.dto";
 import {
-  CreateEmpoyeeRequestDto,
-  UpdateEmpoyeeRequestDto,
+  CreateEmployeeRequestDto,
+  UpdateEmployeeRequestDto,
 } from "../web/dto/request.dto";
+import { ErrorConst } from "../../shared/constant/error.const";
+const uuid = require("uuid");
+
 @Injectable()
 export class EmployeeService {
   private readonly context = EmployeeService.name;
 
   constructor(private readonly repository: EmployeeRepository) {}
 
-  async findPublicById(id: string): Promise<EmployeeReponseDto> {
-    const model = await this.repository.findOne({ id, active: true });
+  async findPublicById(id: string): Promise<EmployeeResponseDto> {
+    const model = await this.repository.findOne({
+      id,
+      active: true,
+    });
     if (!model) {
-      throw new Error();
+      throw new BadRequestException({
+        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
+      });
     }
-    return new EmployeeReponseDto(model);
-  }
-  async findById(id: string): Promise<EmployeeReponseDto> {
-    const model = await this.repository.findOne({ id });
-    if (!model) {
-      throw new Error();
-    }
-    return new EmployeeReponseDto(model);
-  }
-  async findAll(query: any = {}): Promise<EmployeeReponseDto> {
-    return new EmployeeReponseDto(query);
+    return new EmployeeResponseDto(model);
   }
 
-  async create(user: any, dto: CreateEmpoyeeRequestDto) {
+
+  async findPublicAll(query: any = {}): Promise<EmployeePagingResponseDto> {
+    const _query: any = {
+      active: true,
+    };
+    if (query._fields) {
+      _query._fields = query._fields;
+    }
+    if (query.q) {
+      _query.$or = [{ name: { $regex: query.q, $options: "i" } }];
+    }
+    const page = query.page ? Number(query["page"]) : 1;
+    const pageSize = query.pageSize ? Number(query["pageSize"]) : 10;
+    _query.page = page;
+    _query.pageSize = pageSize;
+    _query.isPaging = true;
+    const res = await Promise.all([
+      await this.repository.findAll(_query),
+      await this.repository.countAll(_query),
+    ]);
+    return new EmployeePagingResponseDto({
+      rows: res[0].map((model) => new EmployeeResponseDto(model)),
+      total: res[1],
+      page,
+      pageSize,
+      totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
+    });
+  }
+
+  async findById(id: string): Promise<EmployeeResponseDto> {
+    const model = await this.repository.findOne({ id });
+    if (!model) {
+      throw new BadRequestException({
+        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
+      });
+    }
+    return new EmployeeResponseDto(model);
+  }
+
+  async findAll(query: any = {}): Promise<EmployeePagingResponseDto> {
+    const _query: any = {};
+    if (query._fields) {
+      _query._fields = query._fields;
+    }
+    if (query.q) {
+      _query.$or = [{ name: { $regex: query.q, $options: "i" } }];
+    }
+    if (query.user && query.user.id) {
+      _query["createdBy"] = query.user.id;
+    }
+    const page = query.page ? Number(query["page"]) : 1;
+    const pageSize = query.pageSize ? Number(query["pageSize"]) : 10;
+    _query.page = page;
+    _query.pageSize = pageSize;
+    _query.isPaging = true;
+    const res = await Promise.all([
+      await this.repository.findAll(_query),
+      await this.repository.countAll(_query),
+    ]);
+    return new EmployeePagingResponseDto({
+      rows: res[0].map((model) => new EmployeeResponseDto(model)),
+      total: res[1],
+      page,
+      pageSize,
+      totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
+    });
+  }
+
+  async create(user: any, dto: CreateEmployeeRequestDto) {
     const model: any = { ...dto };
     if (model.id) {
       delete model.id;
@@ -43,13 +108,15 @@ export class EmployeeService {
     return { id: model.id };
   }
 
-  async update(user: any, dto: UpdateEmpoyeeRequestDto) {
-    const oldModel = this.repository.findOne({ id: dto.id });
+  async update(user: any, dto: UpdateEmployeeRequestDto) {
+    const oldModel = await this.repository.findOne({ id: dto.id });
     if (!oldModel) {
-      throw new Error();
+      throw new BadRequestException({
+        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
+      });
     }
     const model = Object.assign(oldModel, dto);
-    await this.repository.path(model.id, model);
+    await this.repository.patch(model.id, model);
     return { id: model.id };
   }
 

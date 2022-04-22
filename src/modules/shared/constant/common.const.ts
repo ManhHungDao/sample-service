@@ -1,6 +1,6 @@
 export class CommonConst {
-  static DATABASE_SERVICE_READ_MODEL = "msx-practice-readmodel";
-  static DATABASE_SERVICE_EVENTS_MODEL = "msx-practice-eventstore";
+  static DATABASE_SERVICE_READ_MODEL = "msx-ManagerCustomer-readmodel";
+  static DATABASE_SERVICE_EVENTS_MODEL = "msx-ManagerCustomer-eventstore";
   static HEADER_PARTERN_STR = "pattern";
   static DEFAULT_TIMEZONE = "Asia/Ho_Chi_Minh";
 
@@ -9,6 +9,10 @@ export class CommonConst {
   static DOMAIN_MODEL_TOKEN = "Domain-ModelToken";
   static QUERY_MODEL_TOKEN = "Query-ModelToken";
   static CODE_COLLECTION = "code-generates";
+
+  static EMPLOYEE_QUERY_MODEL_TOKEN = "Employee-Query-ModelToken";
+  static EMPLOYEE_AGGREGATE_NAME = "employee";
+  static EMPLOYEE_COLLECTION = "employee";
 
   static PRACTICE_QUERY_MODEL_TOKEN = "Practice-Query-ModelToken";
   static PRACTICE_AGGREGATE_NAME = "practice";
@@ -23,6 +27,14 @@ export class CommonConst {
   }
 
   static AGGREGATES = {
+    EMPLOYEE: {
+      NAME: CommonConst.EMPLOYEE_AGGREGATE_NAME,
+      CREATED: CommonConst.EMPLOYEE_AGGREGATE_NAME + "Created",
+      UPDATED: CommonConst.EMPLOYEE_AGGREGATE_NAME + "Updated",
+      DELETED: CommonConst.EMPLOYEE_AGGREGATE_NAME + "Deleted",
+      EVENTS: "events-" + CommonConst.EMPLOYEE_AGGREGATE_NAME,
+      COLLECTION: CommonConst.EMPLOYEE_AGGREGATE_NAME,
+    },
     PRACTICE: {
       NAME: CommonConst.PRACTICE_AGGREGATE_NAME,
       CREATED: CommonConst.PRACTICE_AGGREGATE_NAME + "Created",
