@@ -12,7 +12,11 @@ export class CommonConst {
 
   static EMPLOYEE_QUERY_MODEL_TOKEN = "Employee-Query-ModelToken";
   static EMPLOYEE_AGGREGATE_NAME = "employee";
-  static EMPLOYEE_COLLECTION = "employee";
+  static EMPLOYEE_COLLECTION = "employees";
+
+  static CUSTOMER_QUERY_MODEL_TOKEN = "Customer-Query-ModelToken";
+  static CUSTOMER_AGGREGATE_NAME = "customer";
+  static CUSTOMER_COLLECTION = "customers";
 
   static PRACTICE_QUERY_MODEL_TOKEN = "Practice-Query-ModelToken";
   static PRACTICE_AGGREGATE_NAME = "practice";
@@ -34,6 +38,14 @@ export class CommonConst {
       DELETED: CommonConst.EMPLOYEE_AGGREGATE_NAME + "Deleted",
       EVENTS: "events-" + CommonConst.EMPLOYEE_AGGREGATE_NAME,
       COLLECTION: CommonConst.EMPLOYEE_AGGREGATE_NAME,
+    },
+    CUSTOMER: {
+      NAME: CommonConst.CUSTOMER_AGGREGATE_NAME,
+      CREATED: CommonConst.CUSTOMER_AGGREGATE_NAME + "Created",
+      UPDATED: CommonConst.CUSTOMER_AGGREGATE_NAME + "Updated",
+      DELETED: CommonConst.CUSTOMER_AGGREGATE_NAME + "Deleted",
+      EVENTS: "events-" + CommonConst.CUSTOMER_AGGREGATE_NAME,
+      COLLECTION: CommonConst.CUSTOMER_AGGREGATE_NAME,
     },
     PRACTICE: {
       NAME: CommonConst.PRACTICE_AGGREGATE_NAME,

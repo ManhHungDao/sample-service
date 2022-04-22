@@ -18,11 +18,11 @@ export class PracticePagingResponseDto {
 
 export class PracticeResponseDto {
   id: string;
-  createdDate: Date;
-  createdBy: string;
-  modifiedDate: Date;
-  modifiedBy: string;
-  active: string;
+  createdDate?: Date;
+  createdBy?: string;
+  modifiedDate?: Date;
+  modifiedBy?: string;
+  active?: string;
   // Custom fields
 
   constructor(init?: Partial<PracticeResponseDto | IPractice>) {

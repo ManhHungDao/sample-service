@@ -18,22 +18,21 @@ export class EmployeePagingResponseDto {
 
 export class EmployeeResponseDto {
   id: string;
-  createdDate: Date;
-  createdBy: string;
-  modifiedDate: Date;
-  modifiedBy: string;
-  active: string;
-
+  name: string;
+  email: string;
+  job: string;
+  salary: string;
+  createdDate?: Date;
   constructor(init?: Partial<EmployeeResponseDto | IEmployee>) {
     Object.assign(
       this,
       pick(init, [
         "id",
-        "createdDate",
-        "createdBy",
-        "modifiedDate",
-        "modifiedBy",
-        "active",
+        "name",
+        "email",
+        "job",
+        "salary",
+        "createdDate"
       ])
     );
   }

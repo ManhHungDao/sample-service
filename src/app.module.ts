@@ -9,9 +9,14 @@ import { NotifierClient } from "./modules/mgs-sender/notifier.client";
 import { ListenerModule } from "./modules/listener/listener.module";
 import { StsClient } from "./modules/mgs-sender/sts.client";
 import { PracticeModule } from "./modules/practice/module";
+import { EmployeeModule } from "./modules/employees/module";
+import { CustomerModule } from "./modules/customers/module";
 
 const routes: Routes = [
   { path: "", module: PracticeModule },
+  { path: "", module: EmployeeModule },
+  { path: "", module: CustomerModule },
+
 ];
 
 @Module({
@@ -23,6 +28,8 @@ const routes: Routes = [
     // AuthModule,
     // ListenerModule,
     PracticeModule,
+    EmployeeModule,
+    CustomerModule,
   ],
 })
 export class ApplicationModule implements OnModuleInit {

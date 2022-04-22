@@ -1,5 +1,4 @@
 export enum PermissionEnum {
-  // practice
   PRACTICE_CREATE = "practice.create",
   PRACTICE_UPDATE = "practice.update",
   PRACTICE_DELETE = "practice.delete",
@@ -11,4 +10,11 @@ export enum PermissionEnum {
   EMPLOYEE_DELETE = "employee.delete",
   EMPLOYEE_GET_ALL = "employee.get.all",
   EMPLOYEE_GET_ID = "employee.get.id",
+
+  CUSTOMER_CREATE = "customer.create",
+  CUSTOMER_UPDATE = "customer.update",
+  CUSTOMER_DELETE = "customer.delete",
+  CUSTOMER_GET_ALL = "customer.get.all",
+  CUSTOMER_GET_ID = "customer.get.id",
+
 }
