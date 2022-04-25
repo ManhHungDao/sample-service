@@ -41,8 +41,8 @@ export class PracticePublicController {
   })
   @Get()
   findPublicAll(@Query() query?: any) {
-    console.log('Find All public');
-    return this.service.findPublicAll({ ...query });
+    console.log('Find All public practice');
+    return this.service.findAll({ ...query });
   }
 
   @ApiOperation({ title: "Find one public" })

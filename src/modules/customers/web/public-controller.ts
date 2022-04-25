@@ -40,21 +40,15 @@ export class CustomerPublicController {
     description: "[Filter] Search text",
   })
   @Get()
-  findPublicAll(@Query() query?: any) {
-    console.log('Find All public');
-    return this.service.findPublicAll({ ...query });
+  findAll(@Query() query?: any) {
+    console.log('Find All public customer');
+    return this.service.findAll({ ...query });
   }
 
-  @ApiOperation({ title: "Find one public" })
-  @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get(":id")
-  findPublicById(@Param("id") id: string) {
-    return this.service.findPublicById(id);
-  }
 
-  @ApiOperation({ title: "Find one " })
+  @ApiOperation({ title: "Find one customer " })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get("/private/:id")
+  @Get("/:id")
   findById(@Param("id") id: string) {
     return this.service.findById(id);
   }
@@ -65,7 +59,7 @@ export class CustomerPublicController {
   async create(
     @Body(new ValidationPipe()) dto: CreateCustomerRequestDto
   ) {
-    console.log("create Completed!")
+    console.log("Create Customer Completed!")
     return await this.service.create(null, dto);
   }
 
@@ -74,7 +68,7 @@ export class CustomerPublicController {
   async update(
     @Body(new ValidationPipe()) dto: UpdateCustomerRequestDto
   ) {
-    console.log("update Completed!")
+    console.log("update customer Completed!")
     return await this.service.update(null, dto);
   }
 
@@ -82,7 +76,7 @@ export class CustomerPublicController {
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    console.log("delete Completed")
+    console.log("delete customer Completed")
     return await this.service.delete(null, id);
   }
 

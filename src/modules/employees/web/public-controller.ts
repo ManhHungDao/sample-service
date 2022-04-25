@@ -1,5 +1,16 @@
-
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  UseInterceptors,
+  ValidationPipe,
+} from "@nestjs/common";
 import {
   ApiUseTags,
   ApiImplicitQuery,
@@ -8,7 +19,10 @@ import {
 } from "@nestjs/swagger";
 import { EmployeeService } from "../application/service";
 import { LoggingInterceptor } from "../../../common/interceptors/logging.interceptor";
-import { CreateEmployeeRequestDto, UpdateEmployeeRequestDto } from "./dto/request.dto";
+import {
+  CreateEmployeeRequestDto,
+  UpdateEmployeeRequestDto,
+} from "./dto/request.dto";
 
 @ApiUseTags("[Public] Employee - API public")
 @Controller("v1/public/employee")
@@ -39,41 +53,29 @@ export class EmployeePublicController {
     description: "[Filter] Search text",
   })
   @Get()
-  findPublicAll(@Query() query?: any) {
-    console.log('Find All public');
-    return this.service.findPublicAll({ ...query });
+  findAll(@Query() query?: any) {
+    console.log("Find All employee");
+    return this.service.findAll({ ...query });
   }
 
-  @ApiOperation({ title: "Find one public" })
+  @ApiOperation({ title: "Find one employee" })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get(":id")
-  findPublicById(@Param("id") id: string) {
-    return this.service.findPublicById(id);
-  }
-
-  @ApiOperation({ title: "Find one " })
-  @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get("/private/:id")
+  @Get("/:id")
   findById(@Param("id") id: string) {
     return this.service.findById(id);
   }
 
-
   @ApiOperation({ title: "Create" })
   @Post()
-  async create(
-    @Body(new ValidationPipe()) dto: CreateEmployeeRequestDto
-  ) {
-    console.log("Create Completed!")
+  async create(@Body(new ValidationPipe()) dto: CreateEmployeeRequestDto) {
+    console.log("Create Employee Completed!");
     return await this.service.create(null, dto);
   }
 
   @ApiOperation({ title: "Update" })
   @Put()
-  async update(
-    @Body(new ValidationPipe()) dto: UpdateEmployeeRequestDto
-  ) {
-    console.log("Update Completed!")
+  async update(@Body(new ValidationPipe()) dto: UpdateEmployeeRequestDto) {
+    console.log("Update Employee Completed!");
     return await this.service.update(null, dto);
   }
 
@@ -81,8 +83,7 @@ export class EmployeePublicController {
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    console.log("Delete Completed")
+    console.log("Delete Employee Completed");
     return await this.service.delete(null, id);
   }
-
 }
