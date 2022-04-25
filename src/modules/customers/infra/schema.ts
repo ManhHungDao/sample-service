@@ -2,13 +2,13 @@ import * as mongoose from "mongoose";
 import uuid = require("uuid");
 
 export const CustomerSchema = new mongoose.Schema({
+  _id: { type: String },
+  id: { type: String, default: uuid.v4, index: true },
   name: { type: String, required: true },
-  phone: { type: String },
+  phone: { type: String, required: true },
+  EMAIL: { type: String, required: true },
   takeCareBy: { type: String, default: "" },
-  address: {
-    city: { type: String, required: true },
-    street: { type: String, required: true },
-  },
+  address: { type: String },
   createdDate: { type: Date, default: () => Date.now(), index: true }, // Đánh index
 });
 

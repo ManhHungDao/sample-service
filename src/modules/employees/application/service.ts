@@ -9,58 +9,18 @@ import {
   UpdateEmployeeRequestDto,
 } from "../web/dto/request.dto";
 import { ErrorConst } from "../../shared/constant/error.const";
+
+
 const uuid = require("uuid");
 
-var ObjectId = require("mongodb").ObjectId;
 @Injectable()
 export class EmployeeService {
   private readonly context = EmployeeService.name;
 
   constructor(private readonly repository: EmployeeRepository) {}
 
-  // async findPublicById(id: string): Promise<EmployeeResponseDto> {
-  //   const model = await this.repository.findOne({
-  //     id,
-  //     active: true,
-  //   });
-  //   if (!model) {
-  //     throw new BadRequestException({
-  //       errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
-  //     });
-  //   }
-  //   return new EmployeeResponseDto(model);
-  // }
-
-  // async findPublicAll(query: any = {}): Promise<EmployeePagingResponseDto> {
-  //   const _query: any = {
-  //     // active: true,
-  //   };
-  //   if (query._fields) {
-  //     _query._fields = query._fields;
-  //   }
-  //   if (query.q) {
-  //     _query.$or = [{ name: { $regex: query.q, $options: "i" } }];
-  //   }
-  //   const page = query.page ? Number(query["page"]) : 1;
-  //   const pageSize = query.pageSize ? Number(query["pageSize"]) : 10;
-  //   _query.page = page;
-  //   _query.pageSize = pageSize;
-  //   _query.isPaging = true;
-  //   const res = await Promise.all([
-  //     await this.repository.findAll(_query),
-  //     await this.repository.countAll(_query),
-  //   ]);
-  //   return new EmployeePagingResponseDto({
-  //     rows: res[0].map((model) => new EmployeeResponseDto(model)),
-  //     total: res[1],
-  //     page,
-  //     pageSize,
-  //     totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
-  //   });
-  // }
-
   async findById(id: string): Promise<EmployeeResponseDto> {
-    const model = await this.repository.findOne({ _id: new ObjectId(id) });
+    const model = await this.repository.findOne({ id });
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
@@ -107,7 +67,7 @@ export class EmployeeService {
     await this.repository.create(model);
     return { id: model.id };
   }
-
+ 
   async update(user: any, dto: UpdateEmployeeRequestDto) {
     const oldModel = await this.repository.findOne({ id: dto.id });
     if (!oldModel) {

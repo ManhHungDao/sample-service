@@ -8,8 +8,7 @@ import {
 } from "@nestjs/swagger";
 import { CustomerService } from "../application/service";
 import { LoggingInterceptor } from "../../../common/interceptors/logging.interceptor";
-import { CreateCustomerRequestDto, UpdateCustomerRequestDto } from "./dto/request.dto";
-import { Usr } from "../../shared/decorator/user.decorator";
+import { CreateCustomerRequestDto, InsertCustomerRequestDto, UpdateCustomerRequestDto } from "./dto/request.dto";
 
 @ApiUseTags("[Public] Customer - API public")
 @Controller("v1/public/customer")
@@ -53,14 +52,11 @@ export class CustomerPublicController {
     return this.service.findById(id);
   }
 
-
-  @ApiOperation({ title: "Create" })
+  @ApiOperation({ title: "Insert" })
   @Post()
-  async create(
-    @Body(new ValidationPipe()) dto: CreateCustomerRequestDto
-  ) {
-    console.log("Create Customer Completed!")
-    return await this.service.create(null, dto);
+  async insertMany(@Body(new ValidationPipe()) dto: InsertCustomerRequestDto) {
+    console.log("Insert Employee Completed!");
+    return await this.service.insertMany(null, dto);
   }
 
   @ApiOperation({ title: "Update" })

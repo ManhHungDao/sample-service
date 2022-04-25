@@ -9,3 +9,12 @@ export class UpdateCustomerRequestDto {
   @IsNotEmpty()
   id: string;
 }
+
+export class InsertCustomerRequestDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+  gmail: string;
+  name: string;
+  address: string;
+}

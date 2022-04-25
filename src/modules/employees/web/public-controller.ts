@@ -58,13 +58,12 @@ export class EmployeePublicController {
     return this.service.findAll({ ...query });
   }
 
-  @ApiOperation({ title: "Find one employee" })
+  @ApiOperation({ title: "Find one EMPLOYEE " })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Get("/:id")
   findById(@Param("id") id: string) {
     return this.service.findById(id);
   }
-
   @ApiOperation({ title: "Create" })
   @Post()
   async create(@Body(new ValidationPipe()) dto: CreateEmployeeRequestDto) {
@@ -72,10 +71,11 @@ export class EmployeePublicController {
     return await this.service.create(null, dto);
   }
 
+
   @ApiOperation({ title: "Update" })
   @Put()
   async update(@Body(new ValidationPipe()) dto: UpdateEmployeeRequestDto) {
-    console.log("Update Employee Completed!");
+    console.log("Insert Employee Completed!");
     return await this.service.update(null, dto);
   }
 

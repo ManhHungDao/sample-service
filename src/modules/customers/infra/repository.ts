@@ -14,32 +14,16 @@ export class CustomerRepository {
     private readonly readModel: Model<ICustomerDocument>
   ) {}
 
-  /**
-   * Hàm lấy tất cả record theo điều kiện
-   * @param query Điều kiện query
-   * @param projection Các trường cần lấy ra
-   * @returns
-   */
+ 
   async find(query: any, projection = {}): Promise<ICustomer[]> {
     return await this.readModel.find(query, projection).lean().exec();
   }
 
-  /**
-   * Hàm lấy một record theo điều kiện
-   * @param query Điều kiện query
-   * @param projection Các trường cần lấy ra
-   * @returns
-   */
+ 
   async findOne(query: any, projection = {}): Promise<ICustomer> {
     return await this.readModel.findOne(query, projection).lean().exec();
   }
 
-  /**
-   * Hàm lấy tất cả record theo điều kiện (Phân trang)
-   * @param query Điều kiện query
-   * @param projection Các trường cần lấy ra
-   * @returns
-   */
   async findAll(query: any, projection = {}): Promise<ICustomer[]> {
     let sort: any = {
       createdDate: -1,

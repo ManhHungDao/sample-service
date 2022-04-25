@@ -23,6 +23,7 @@ export class EmployeeResponseDto {
   job: string;
   salary: string;
   createdDate?: Date;
+  
   constructor(init?: Partial<EmployeeResponseDto | IEmployee>) {
     Object.assign(
       this,

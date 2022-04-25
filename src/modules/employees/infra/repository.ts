@@ -19,10 +19,10 @@ export class EmployeeRepository {
   }
 
 
+  
   async findOne(query: any, projection = {}): Promise<IEmployee> {
     return await this.readModel.findOne(query, projection).lean().exec();
   }
-
 
   async findAll(query: any, projection = {}): Promise<IEmployee[]> {
     let sort: any = {
