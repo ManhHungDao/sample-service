@@ -6,7 +6,7 @@ export const CustomerSchema = new mongoose.Schema({
   id: { type: String, default: uuid.v4, index: true },
   name: { type: String, required: true },
   phone: { type: String, required: true },
-  EMAIL: { type: String, required: true },
+  email: { type: String, required: true },
   takeCareBy: { type: String, default: "" },
   address: { type: String },
   createdDate: { type: Date, default: () => Date.now(), index: true }, // Đánh index

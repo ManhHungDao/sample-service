@@ -11,10 +11,10 @@ export class UpdateCustomerRequestDto {
 }
 
 export class InsertCustomerRequestDto {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-  gmail: string;
+  // @IsString()
+  // @IsNotEmpty()
   name: string;
+  email: string;
+  phone: string;
   address: string;
 }

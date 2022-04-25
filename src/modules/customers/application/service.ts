@@ -11,9 +11,8 @@ import {
 } from "../web/dto/request.dto";
 import { ErrorConst } from "../../shared/constant/error.const";
 const uuid = require("uuid");
-const path = require("path");
-const express = require("express");
 const csv = require("csvtojson");
+const csvFilePath='E:/Documents/propcom_training/backend/sample-service/data/customer.csv'
 @Injectable()
 export class CustomerService {
   private readonly context = CustomerService.name;
@@ -61,16 +60,14 @@ export class CustomerService {
   }
 
   async insertMany(user: any, dto: InsertCustomerRequestDto) {
-    // const link = express.static(path.join(__dirname, "data"));
-    const link = "../../../../data/customer.csv";
-    await csv().fromFile(link).then(result => {
+    await csv().fromFile(csvFilePath).then(result => {
       this.repository.insertMany(result);
     }).catch(err => {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
       })
     });
-    return link;
+    return 'susscess';
   }
 
   async update(user: any, dto: UpdateCustomerRequestDto) {

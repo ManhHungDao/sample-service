@@ -10,6 +10,7 @@ import { CustomerService } from "../application/service";
 import { LoggingInterceptor } from "../../../common/interceptors/logging.interceptor";
 import { CreateCustomerRequestDto, InsertCustomerRequestDto, UpdateCustomerRequestDto } from "./dto/request.dto";
 
+
 @ApiUseTags("[Public] Customer - API public")
 @Controller("v1/public/customer")
 @UseInterceptors(LoggingInterceptor)
