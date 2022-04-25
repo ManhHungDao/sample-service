@@ -1,5 +1,16 @@
-
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  UseInterceptors,
+  ValidationPipe,
+} from "@nestjs/common";
 import {
   ApiUseTags,
   ApiImplicitQuery,
@@ -8,8 +19,11 @@ import {
 } from "@nestjs/swagger";
 import { CustomerService } from "../application/service";
 import { LoggingInterceptor } from "../../../common/interceptors/logging.interceptor";
-import { CreateCustomerRequestDto, InsertCustomerRequestDto, UpdateCustomerRequestDto } from "./dto/request.dto";
-
+import {
+  CreateCustomerRequestDto,
+  InsertCustomerRequestDto,
+  UpdateCustomerRequestDto,
+} from "./dto/request.dto";
 
 @ApiUseTags("[Public] Customer - API public")
 @Controller("v1/public/customer")
@@ -41,10 +55,9 @@ export class CustomerPublicController {
   })
   @Get()
   findAll(@Query() query?: any) {
-    console.log('Find All public customer');
+    console.log("Find All public customer");
     return this.service.findAll({ ...query });
   }
-
 
   @ApiOperation({ title: "Find one customer " })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
@@ -53,19 +66,25 @@ export class CustomerPublicController {
     return this.service.findById(id);
   }
 
-  @ApiOperation({ title: "Insert" })
+  @ApiOperation({ title: "Create" })
   @Post()
+  async create(@Body(new ValidationPipe()) dto: CreateCustomerRequestDto) {
+    console.log("Create Customer Completed!");
+    return await this.service.create(null, dto);
+  }
+
+
+  @ApiOperation({ title: "Insert" })
+  @Post("/insert")
   async insertMany(@Body(new ValidationPipe()) dto: InsertCustomerRequestDto) {
-    console.log("Insert Employee Completed!");
+    console.log("Insert Customer Completed!");
     return await this.service.insertMany(null, dto);
   }
 
   @ApiOperation({ title: "Update" })
   @Put()
-  async update(
-    @Body(new ValidationPipe()) dto: UpdateCustomerRequestDto
-  ) {
-    console.log("update customer Completed!")
+  async update(@Body(new ValidationPipe()) dto: UpdateCustomerRequestDto) {
+    console.log("update Customer Completed!");
     return await this.service.update(null, dto);
   }
 
@@ -73,8 +92,7 @@ export class CustomerPublicController {
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    console.log("delete customer Completed")
+    console.log("delete customer Completed");
     return await this.service.delete(null, id);
   }
-
 }

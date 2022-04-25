@@ -12,13 +12,13 @@ import {
 import { ErrorConst } from "../../shared/constant/error.const";
 const uuid = require("uuid");
 const csv = require("csvtojson");
-const csvFilePath='E:/Documents/propcom_training/backend/sample-service/data/customer.csv'
+const csvFilePath =
+  "E:/Documents/propcom_training/backend/sample-service/data/customer.csv";
 @Injectable()
 export class CustomerService {
   private readonly context = CustomerService.name;
 
   constructor(private readonly repository: CustomerRepository) {}
-
 
   async findById(id: string): Promise<CustomerResponseDto> {
     const model = await this.repository.findOne({ id });
@@ -59,15 +59,53 @@ export class CustomerService {
     });
   }
 
-  async insertMany(user: any, dto: InsertCustomerRequestDto) {
-    await csv().fromFile(csvFilePath).then(result => {
-      this.repository.insertMany(result);
-    }).catch(err => {
+  // async create(user: any, dto: CreateCustomerRequestDto) {
+  //   const model: any = { ...dto };
+  //   if (model.id) {
+  //     delete model.id;
+  //   }
+
+  //   model.id = uuid.v4();
+  //   await this.repository.create(model);
+  //   return { id: model.id };
+  // }
+
+  async create(user: any, dto: CreateCustomerRequestDto) {
+    const check = await this.repository.findOne({ phone: dto.phone });
+    if (check) {
       throw new BadRequestException({
-        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Employee"),
-      })
+        errors: ErrorConst.Error(ErrorConst.EXISTED, "Customer"),
+      });
+    } else {
+      const model: any = { ...dto };
+      if (model.id) {
+        delete model.id;
+      }
+      model.id = uuid.v4();
+      await this.repository.create(model);
+      return new CustomerResponseDto(model);
+    }
+  }
+
+  async insertMany(user: any, dto: InsertCustomerRequestDto) {
+    // await csv()
+    //   .fromFile(csvFilePath)
+    //   .then((result) => {
+    //     this.repository.insertMany(result);
+    //     return new CustomerResponseDto(result);
+    //   })
+    //   .catch((err) => {
+    //     throw new BadRequestException({
+    //       errors: ErrorConst.Error(ErrorConst.CANT_APPROVE, "Employee"),
+    //     });
+    //   });
+    const insertFile = await csv().fromFile(csvFilePath);
+    this.repository.insertMany(insertFile).catch((err)=>{
+      throw new BadRequestException({
+        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
+      });
     });
-    return 'susscess';
+    return new CustomerResponseDto(insertFile);
   }
 
   async update(user: any, dto: UpdateCustomerRequestDto) {

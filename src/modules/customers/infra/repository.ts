@@ -24,6 +24,7 @@ export class CustomerRepository {
     return await this.readModel.findOne(query, projection).lean().exec();
   }
 
+
   async findAll(query: any, projection = {}): Promise<ICustomer[]> {
     let sort: any = {
       createdDate: -1,
