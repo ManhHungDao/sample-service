@@ -22,8 +22,8 @@ export class EmployeeResponseDto {
   email: string;
   job: string;
   salary: string;
+  isBusinessTraining:Boolean;
   createdDate?: Date;
-  
   constructor(init?: Partial<EmployeeResponseDto | IEmployee>) {
     Object.assign(
       this,
@@ -33,6 +33,7 @@ export class EmployeeResponseDto {
         "email",
         "job",
         "salary",
+        "isBusinessTraining",
         "createdDate"
       ])
     );

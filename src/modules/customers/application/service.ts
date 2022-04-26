@@ -10,6 +10,7 @@ import {
   UpdateCustomerRequestDto,
 } from "../web/dto/request.dto";
 import { ErrorConst } from "../../shared/constant/error.const";
+import _ from "lodash";
 const uuid = require("uuid");
 const csv = require("csvtojson");
 const csvFilePath =
@@ -20,8 +21,8 @@ export class CustomerService {
 
   constructor(private readonly repository: CustomerRepository) {}
 
-  async findById(id: string): Promise<CustomerResponseDto> {
-    const model = await this.repository.findOne({ id });
+  async findById(takeCareBy: string): Promise<CustomerResponseDto> {
+    const model: any = await this.repository.find({ takeCareBy });
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
@@ -30,48 +31,9 @@ export class CustomerService {
     return new CustomerResponseDto(model);
   }
 
-  async findAll(query: any = {}): Promise<CustomerPagingResponseDto> {
-    const _query: any = {};
-    if (query._fields) {
-      _query._fields = query._fields;
-    }
-    if (query.q) {
-      _query.$or = [{ name: { $regex: query.q, $options: "i" } }];
-    }
-    if (query.user && query.user.id) {
-      _query["createdBy"] = query.user.id;
-    }
-    const page = query.page ? Number(query["page"]) : 1;
-    const pageSize = query.pageSize ? Number(query["pageSize"]) : 10;
-    _query.page = page;
-    _query.pageSize = pageSize;
-    _query.isPaging = true;
-    const res = await Promise.all([
-      await this.repository.findAll(_query),
-      await this.repository.countAll(_query),
-    ]);
-    return new CustomerPagingResponseDto({
-      rows: res[0].map((model) => new CustomerResponseDto(model)),
-      total: res[1],
-      page,
-      pageSize,
-      totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
-    });
-  }
-
-  // async create(user: any, dto: CreateCustomerRequestDto) {
-  //   const model: any = { ...dto };
-  //   if (model.id) {
-  //     delete model.id;
-  //   }
-
-  //   model.id = uuid.v4();
-  //   await this.repository.create(model);
-  //   return { id: model.id };
-  // }
-
   async create(user: any, dto: CreateCustomerRequestDto) {
     const check = await this.repository.findOne({ phone: dto.phone });
+    console.log(check);
     if (check) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.EXISTED, "Customer"),
@@ -88,24 +50,13 @@ export class CustomerService {
   }
 
   async insertMany(user: any, dto: InsertCustomerRequestDto) {
-    // await csv()
-    //   .fromFile(csvFilePath)
-    //   .then((result) => {
-    //     this.repository.insertMany(result);
-    //     return new CustomerResponseDto(result);
-    //   })
-    //   .catch((err) => {
-    //     throw new BadRequestException({
-    //       errors: ErrorConst.Error(ErrorConst.CANT_APPROVE, "Employee"),
-    //     });
-    //   });
     const insertFile = await csv().fromFile(csvFilePath);
-    this.repository.insertMany(insertFile).catch((err)=>{
+    this.repository.insertMany(insertFile).catch((err) => {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
       });
     });
-    return new CustomerResponseDto(insertFile);
+    return insertFile;
   }
 
   async update(user: any, dto: UpdateCustomerRequestDto) {
@@ -124,5 +75,26 @@ export class CustomerService {
   async delete(user: any, id: string) {
     await this.repository.delete({ id });
     return { id: id };
+  }
+
+  async updateMany(query: any, idEmployee: string, isBusiness: boolean) {
+    // const updateBusiness = await this.repository.findOne({});
+    if (isBusiness) {
+      this.repository
+        .updateMany({ isBusiness: true }, { takeCareBy: idEmployee })
+        .catch((err) => {
+          throw new BadRequestException({
+            errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
+          });
+        });
+    } else {
+      this.repository
+        .updateMany({ isBusiness: false }, { takeCareBy: idEmployee })
+        .catch((err) => {
+          throw new BadRequestException({
+            errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
+          });
+        });
+    }
   }
 }

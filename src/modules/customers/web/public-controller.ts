@@ -53,17 +53,12 @@ export class CustomerPublicController {
     required: false,
     description: "[Filter] Search text",
   })
-  @Get()
-  findAll(@Query() query?: any) {
-    console.log("Find All public customer");
-    return this.service.findAll({ ...query });
-  }
-
-  @ApiOperation({ title: "Find one customer " })
+  @ApiOperation({ title: "Find customer belong to employee by id" })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Get("/:id")
-  findById(@Param("id") id: string) {
-    return this.service.findById(id);
+  findById(@Param("takeCareBy") takeCareBy: string) {
+    console.log("Find customer belong to employee by id");
+    return this.service.findById(takeCareBy);
   }
 
   @ApiOperation({ title: "Create" })
@@ -73,12 +68,27 @@ export class CustomerPublicController {
     return await this.service.create(null, dto);
   }
 
-
   @ApiOperation({ title: "Insert" })
   @Post("/insert")
   async insertMany(@Body(new ValidationPipe()) dto: InsertCustomerRequestDto) {
     console.log("Insert Customer Completed!");
     return await this.service.insertMany(null, dto);
+  }
+
+  @ApiOperation({ title: "Update TakecareBy" })
+  @ApiImplicitParam({ name: "id", required: true, description: "Id" })
+  @ApiImplicitParam({
+    name: "isBusinessTraining",
+    description: "isBusinessTraining",
+  })
+  @Put(":id/:isBusinessTraining")
+  updateMany(
+    @Param("id") id: string,
+    @Param("isBusinessTraining") isBusinessTraining: boolean
+  ) {
+    console.log("updated customer TakecareBy Completed");
+    console.log({id},{isBusinessTraining});
+    return this.service.updateMany(null, id, isBusinessTraining);
   }
 
   @ApiOperation({ title: "Update" })
@@ -92,6 +102,7 @@ export class CustomerPublicController {
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Delete(":id")
   async delete(@Param("id") id: string) {
+    console.log({id})
     console.log("delete customer Completed");
     return await this.service.delete(null, id);
   }

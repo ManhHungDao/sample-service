@@ -9,6 +9,7 @@ export const EmployeeSchema = new mongoose.Schema({
   salary: { type: Number, required: true },
   createdDate: { type: Date, default: () => Date.now(), index: true },
   id: { type: String, default: uuid.v4, index: true },
+  isBusinessTraining: { type: Boolean, default: false },
 });
 
 EmployeeSchema.pre("save", function (next) {

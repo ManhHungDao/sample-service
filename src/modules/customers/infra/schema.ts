@@ -7,9 +7,11 @@ export const CustomerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String, required: true },
+  address: { type: String, required: true },
+  isBusiness: { type: Boolean, default: false },
+  createdDate: { type: Date, default: () => Date.now(), index: true },
+  // takeCareBy: { type:String , ref : 'employees'}
   takeCareBy: { type: String, default: "" },
-  address: { type: String },
-  createdDate: { type: Date, default: () => Date.now(), index: true }, // Đánh index
 });
 
 CustomerSchema.pre("save", function (next) {
