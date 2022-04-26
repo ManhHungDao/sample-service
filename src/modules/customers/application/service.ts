@@ -22,7 +22,7 @@ export class CustomerService {
   constructor(private readonly repository: CustomerRepository) {}
 
   async findById(takeCareBy: string): Promise<CustomerResponseDto> {
-    const model: any = await this.repository.find({  takeCareBy });
+    const model: any = await this.repository.find({ takeCareBy });
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
@@ -50,11 +50,12 @@ export class CustomerService {
 
   async insertMany(user: any, dto: InsertCustomerRequestDto) {
     const insertFile = await csv().fromFile(csvFilePath);
-    this.repository.insertMany(insertFile).catch((err) => {
-      throw new BadRequestException({
-        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
-      });
+    await this.repository.insertMany(insertFile).catch((err) => {
+      console.log(err)
     });
+    for (const key in insertFile) {
+      insertFile[key] = new CustomerResponseDto(insertFile[key]);
+    }
     return insertFile;
   }
 
@@ -86,7 +87,7 @@ export class CustomerService {
             errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
           });
         });
-        return { id: idEmployee, isBusiness:isBusiness};
+      return { id: idEmployee, isBusiness: isBusiness };
     } else {
       this.repository
         .updateMany({ isBusiness: false }, { takeCareBy: idEmployee })
@@ -95,7 +96,7 @@ export class CustomerService {
             errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
           });
         });
-        return { id: idEmployee, isBusiness:isBusiness};
+      return { id: idEmployee, isBusiness: isBusiness };
     }
   }
 }
