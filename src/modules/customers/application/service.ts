@@ -22,18 +22,17 @@ export class CustomerService {
   constructor(private readonly repository: CustomerRepository) {}
 
   async findById(takeCareBy: string): Promise<CustomerResponseDto> {
-    const model: any = await this.repository.find({ takeCareBy });
+    const model: any = await this.repository.find({  takeCareBy });
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
       });
     }
-    return new CustomerResponseDto(model);
+    return model;
   }
 
   async create(user: any, dto: CreateCustomerRequestDto) {
     const check = await this.repository.findOne({ phone: dto.phone });
-    console.log(check);
     if (check) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.EXISTED, "Customer"),
@@ -87,6 +86,7 @@ export class CustomerService {
             errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
           });
         });
+        return { id: idEmployee, isBusiness:isBusiness};
     } else {
       this.repository
         .updateMany({ isBusiness: false }, { takeCareBy: idEmployee })
@@ -95,6 +95,7 @@ export class CustomerService {
             errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
           });
         });
+        return { id: idEmployee, isBusiness:isBusiness};
     }
   }
 }

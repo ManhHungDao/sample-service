@@ -56,9 +56,9 @@ export class CustomerPublicController {
   @ApiOperation({ title: "Find customer belong to employee by id" })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Get("/:id")
-  findById(@Param("takeCareBy") takeCareBy: string) {
+  findById(@Param("id") id: string) {
     console.log("Find customer belong to employee by id");
-    return this.service.findById(takeCareBy);
+    return this.service.findById(id);
   }
 
   @ApiOperation({ title: "Create" })
