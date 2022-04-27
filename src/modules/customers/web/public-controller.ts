@@ -68,11 +68,18 @@ export class CustomerPublicController {
     return await this.service.create(null, dto);
   }
 
+  // @ApiOperation({ title: "Insert" })
+  // @Post("/insert")
+  // async insertMany(@Body(new ValidationPipe()) dto: InsertCustomerRequestDto) {
+  //   console.log("Insert Customer Completed!");
+  //   return await this.service.insertMany(null, dto);
+  // }
+
   @ApiOperation({ title: "Insert" })
   @Post("/insert")
-  async insertMany(@Body(new ValidationPipe()) dto: InsertCustomerRequestDto) {
+  async insertMany() {
     console.log("Insert Customer Completed!");
-    return await this.service.insertMany(null, dto);
+    return await this.service.insertMany(null );
   }
 
   @ApiOperation({ title: "Update TakecareBy" })

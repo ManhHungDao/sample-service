@@ -11,6 +11,7 @@ import {
 } from "../web/dto/request.dto";
 import { ErrorConst } from "../../shared/constant/error.const";
 import _ from "lodash";
+import { IsJSON } from "class-validator";
 const uuid = require("uuid");
 const csv = require("csvtojson");
 const csvFilePath =
@@ -27,6 +28,9 @@ export class CustomerService {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Customer"),
       });
+    }
+    for (const key in model) {
+      model[key] = new CustomerResponseDto(model[key]);
     }
     return model;
   }
@@ -48,14 +52,26 @@ export class CustomerService {
     }
   }
 
-  async insertMany(user: any, dto: InsertCustomerRequestDto) {
+  //fix _id
+
+  // async insertMany(user: any) {
+  //   const insertFile = await csv().fromFile(csvFilePath);
+  //   for (const key in insertFile) {
+  //     if (insertFile[key].id) {
+  //       delete insertFile[key].id;
+  //     }
+  //     insertFile[key].id = uuid.v4();
+  //     await this.repository.create(insertFile[key]);
+  //   }
+  //   return insertFile;
+  // }
+
+  async insertMany(user: any) {
     const insertFile = await csv().fromFile(csvFilePath);
-    await this.repository.insertMany(insertFile).catch((err) => {
-      console.log(err)
+    insertFile.forEach((result) => {
+      this.create(null, result).catch((err) => {
+      });
     });
-    for (const key in insertFile) {
-      insertFile[key] = new CustomerResponseDto(insertFile[key]);
-    }
     return insertFile;
   }
 
