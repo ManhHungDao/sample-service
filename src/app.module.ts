@@ -11,11 +11,13 @@ import { StsClient } from "./modules/mgs-sender/sts.client";
 import { PracticeModule } from "./modules/practice/module";
 import { EmployeeModule } from "./modules/employees/module";
 import { CustomerModule } from "./modules/customers/module";
+import { SurveyModule } from "./modules/Survey/module";
 
 const routes: Routes = [
   { path: "", module: PracticeModule },
   { path: "", module: EmployeeModule },
   { path: "", module: CustomerModule },
+  { path: "", module: SurveyModule },
 
 ];
 
@@ -30,6 +32,7 @@ const routes: Routes = [
     PracticeModule,
     EmployeeModule,
     CustomerModule,
+    SurveyModule
   ],
 })
 export class ApplicationModule implements OnModuleInit {

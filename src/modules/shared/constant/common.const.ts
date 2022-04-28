@@ -10,6 +10,10 @@ export class CommonConst {
   static QUERY_MODEL_TOKEN = "Query-ModelToken";
   static CODE_COLLECTION = "code-generates";
 
+  static SURVEY_QUERY_MODEL_TOKEN = "Survey-Query-ModelToken";
+  static SURVEY_AGGREGATE_NAME = "Survey";
+  static SURVEY_COLLECTION = "Surveys";
+
   static EMPLOYEE_QUERY_MODEL_TOKEN = "Employee-Query-ModelToken";
   static EMPLOYEE_AGGREGATE_NAME = "employee";
   static EMPLOYEE_COLLECTION = "employees";
@@ -38,6 +42,14 @@ export class CommonConst {
       DELETED: CommonConst.EMPLOYEE_AGGREGATE_NAME + "Deleted",
       EVENTS: "events-" + CommonConst.EMPLOYEE_AGGREGATE_NAME,
       COLLECTION: CommonConst.EMPLOYEE_AGGREGATE_NAME,
+    },
+    SURVEY: {
+      NAME: CommonConst.SURVEY_AGGREGATE_NAME,
+      CREATED: CommonConst.SURVEY_AGGREGATE_NAME + "Created",
+      UPDATED: CommonConst.SURVEY_AGGREGATE_NAME + "Updated",
+      DELETED: CommonConst.SURVEY_AGGREGATE_NAME + "Deleted",
+      EVENTS: "events-" + CommonConst.SURVEY_AGGREGATE_NAME,
+      COLLECTION: CommonConst.SURVEY_AGGREGATE_NAME,
     },
     CUSTOMER: {
       NAME: CommonConst.CUSTOMER_AGGREGATE_NAME,
