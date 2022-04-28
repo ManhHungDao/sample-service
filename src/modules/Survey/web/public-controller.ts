@@ -12,7 +12,7 @@ import { CreateSurveyRequestDto, UpdateSurveyRequestDto } from "./dto/request.dt
 import { Usr } from "../../shared/decorator/user.decorator";
 
 @ApiUseTags("[Public] Survey - API public")
-@Controller("v1/public/Survey")
+@Controller("v1/public/survey")
 @UseInterceptors(LoggingInterceptor)
 export class SurveyPublicController {
   constructor(private readonly service: SurveyService) {}
@@ -59,7 +59,7 @@ export class SurveyPublicController {
   async create(
     @Body(new ValidationPipe()) dto: CreateSurveyRequestDto
   ) {
-    console.log("create Completed!")
+    console.log("Create Servey Completed!")
     return await this.service.create(null, dto);
   }
 

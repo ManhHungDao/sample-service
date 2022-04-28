@@ -2,8 +2,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateSurveyRequestDto {
   @IsString()
-  owner: string;
-  
+  cusId: string;
+  empId: string;
 }
 
 export class UpdateSurveyRequestDto {
