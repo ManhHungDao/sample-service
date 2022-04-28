@@ -41,18 +41,12 @@ export class SurveyPublicController {
   })
   @Get()
   findPublicAll(@Query() query?: any) {
-    console.log('Find All public Survey');
+    console.log('Find All Survey');
     return this.service.findAll({ ...query });
   }
 
-  @ApiOperation({ title: "Find one public" })
-  @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get(":id")
-  findPublicById(@Param("id") id: string) {
-    return this.service.findPublicById(id);
-  }
 
-  @ApiOperation({ title: "Find one " })
+  @ApiOperation({ title: "Find one Survey bi owner" })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Get("/private/:id")
   findById(@Param("id") id: string) {

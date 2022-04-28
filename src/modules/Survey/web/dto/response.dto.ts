@@ -18,25 +18,21 @@ export class SurveyPagingResponseDto {
 
 export class SurveyResponseDto {
   id: string;
-  createdDate?: Date;
-  createdBy?: string;
-  modifiedDate?: Date;
-  modifiedBy?: string;
-  active?: string;
-  // Custom fields
-
+  cusId: string;
+  empId: string;
+  createdDate: Date;
+  content: {
+    description: string;
+    demand: string;
+  };
+  buy?: {
+    budget?: Number;
+    projectName?: string;
+  };
   constructor(init?: Partial<SurveyResponseDto | ISurvey>) {
     Object.assign(
       this,
-      pick(init, [
-        "id",
-        "createdDate",
-        "createdBy",
-        "modifiedDate",
-        "modifiedBy",
-        "active",
-        // Custom fields
-      ])
+      pick(init, ["id", "cusId","empId", "createdDate", "content", "buy"])
     );
   }
 }
