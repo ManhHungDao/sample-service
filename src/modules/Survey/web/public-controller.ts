@@ -46,13 +46,19 @@ export class SurveyPublicController {
   }
 
 
-  @ApiOperation({ title: "Find one Survey bi owner" })
+  @ApiOperation({ title: "Find one Survey bi Cus_ID" })
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
-  @Get("/private/:id")
-  findById(@Param("id") id: string) {
+  @Get("/customer/:id")
+  findByCusId(@Param("id") id: string) {
     return this.service.findById(id);
   }
 
+  @ApiOperation({ title: "Find one Survey bi Emp_ID" })
+  @ApiImplicitParam({ name: "id", required: true, description: "Id" })
+  @Get("/employee/:id")
+  findByEmpId(@Param("id") id: string) {
+    return this.service.findById(id);
+  }
 
   @ApiOperation({ title: "Create" })
   @Post()

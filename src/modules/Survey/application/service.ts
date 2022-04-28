@@ -17,56 +17,18 @@ export class SurveyService {
 
   constructor(private readonly repository: SurveyRepository) {}
 
-  async findPublicById(id: string): Promise<SurveyResponseDto> {
-    const model = await this.repository.findOne({
-      id,
-      active: true,
-    });
+  async findById(id: string): Promise<any> {
+    const model = await this.repository.find({$or: [{cusId: id},{empId: id}]});
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Survey"),
       });
     }
-    return new SurveyResponseDto(model);
-  }
-
-
-  async findPublicAll(query: any = {}): Promise<SurveyPagingResponseDto> {
-    const _query: any = {
-      active: true,
-    };
-    if (query._fields) {
-      _query._fields = query._fields;
-    }
-    if (query.q) {
-      _query.$or = [{ name: { $regex: query.q, $options: "i" } }];
-    }
-    const page = query.page ? Number(query["page"]) : 1;
-    const pageSize = query.pageSize ? Number(query["pageSize"]) : 10;
-    _query.page = page;
-    _query.pageSize = pageSize;
-    _query.isPaging = true;
-    const res = await Promise.all([
-      await this.repository.findAll(_query),
-      await this.repository.countAll(_query),
-    ]);
-    return new SurveyPagingResponseDto({
-      rows: res[0].map((model) => new SurveyResponseDto(model)),
-      total: res[1],
-      page,
-      pageSize,
-      totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
-    });
-  }
-
-  async findById(id: string): Promise<SurveyResponseDto> {
-    const model = await this.repository.findOne({ id });
-    if (!model) {
-      throw new BadRequestException({
-        errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Survey"),
-      });
-    }
-    return new SurveyResponseDto(model);
+    model.map(model => {
+      model = new SurveyResponseDto(model);
+    })
+    console.log(model);
+    return model;
   }
 
   async findAll(query: any = {}): Promise<SurveyPagingResponseDto> {
