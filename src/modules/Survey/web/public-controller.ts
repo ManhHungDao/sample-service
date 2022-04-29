@@ -82,7 +82,7 @@ export class SurveyPublicController {
   @ApiImplicitParam({ name: "id", required: true, description: "Id" })
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    console.log("delete Completed")
+    console.log("delete survey Completed")
     return await this.service.delete(null, id);
   }
 

@@ -18,11 +18,11 @@ export class EmployeePagingResponseDto {
 
 export class EmployeeResponseDto {
   id: string;
-  name: string;
-  email: string;
-  job: string;
-  salary: string;
-  isBusinessTraining:Boolean;
+  name?: string;
+  email?: string;
+  job?: string;
+  salary?: string;
+  isBusinessTraining?:Boolean;
   createdDate?: Date;
   constructor(init?: Partial<EmployeeResponseDto | IEmployee>) {
     Object.assign(

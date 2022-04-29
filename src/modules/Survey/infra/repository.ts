@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Aggregate, Model } from "mongoose";
 import { Inject, Injectable } from "@nestjs/common";
 import { ISurveyDocument } from "../interfaces/document.interface";
 import { CommonConst } from "../../shared/constant/index";
@@ -40,6 +40,38 @@ export class SurveyRepository {
    * @param projection Các trường cần lấy ra
    * @returns
    */
+  // async findAll(query: any, projection = {}): Promise<ISurvey[]> {
+  //   let sort: any = {
+  //     createdDate: -1,
+  //   };
+  //   if (!_.isEmpty(query.sort)) {
+  //     sort = CommonUtils.transformSort(query.sort) || {
+  //       createdDate: -1,
+  //     };
+  //     delete query.sort;
+  //   }
+  //   if (query.isPaging) {
+  //     const page = query.page;
+  //     const pageSize = query.pageSize;
+  //     delete query.isPaging;
+  //     delete query.page;
+  //     delete query.pageSize;
+  //     return await this.readModel
+  //       .find(query, projection)
+  //       .sort(sort)
+  //       .skip(page * pageSize - pageSize)
+  //       .limit(pageSize)
+  //       .lean()
+  //       .exec();
+  //   } else {
+  //     return await this.readModel
+  //       .find(query, projection)
+  //       .sort(sort)
+  //       .lean()
+  //       .exec();
+  //   }
+  // }
+
   async findAll(query: any, projection = {}): Promise<ISurvey[]> {
     let sort: any = {
       createdDate: -1,
@@ -56,19 +88,21 @@ export class SurveyRepository {
       delete query.isPaging;
       delete query.page;
       delete query.pageSize;
-      return await this.readModel
-        .find(query, projection)
-        .sort(sort)
-        .skip(page * pageSize - pageSize)
-        .limit(pageSize)
-        .lean()
-        .exec();
+      const match = [
+        { $match: query },
+        { $project: { id: 1 } },
+        { $sort: sort },
+        { $skip: page * pageSize - pageSize },
+        { $limit: pageSize },
+      ];
+      // console.log(JSON.stringify(match))
+      return await this.readModel.aggregate(match);
     } else {
-      return await this.readModel
-        .find(query, projection)
-        .sort(sort)
-        .lean()
-        .exec();
+      this.readModel.aggregate([
+        { $match: query },
+        // { $project: projection },
+        { $sort: sort },
+      ]);
     }
   }
 

@@ -18,15 +18,17 @@ export class SurveyService {
   constructor(private readonly repository: SurveyRepository) {}
 
   async findById(id: string): Promise<any> {
-    const model = await this.repository.find({$or: [{cusId: id},{empId: id}]});
+    const model = await this.repository.find({
+      $or: [{ cusId: id }, { empId: id }],
+    });
     if (!model) {
       throw new BadRequestException({
         errors: ErrorConst.Error(ErrorConst.NOT_FOUND, "Survey"),
       });
     }
-    model.map(model => {
+    model.map((model) => {
       model = new SurveyResponseDto(model);
-    })
+    });
     console.log(model);
     return model;
   }
@@ -51,13 +53,14 @@ export class SurveyService {
       await this.repository.findAll(_query),
       await this.repository.countAll(_query),
     ]);
-    return new SurveyPagingResponseDto({
+    const test = new SurveyPagingResponseDto({
       rows: res[0].map((model) => new SurveyResponseDto(model)),
       total: res[1],
       page,
       pageSize,
       totalPages: Math.floor((res[1] + pageSize - 1) / pageSize),
     });
+    return test;
   }
 
   async create(user: any, dto: CreateSurveyRequestDto) {
